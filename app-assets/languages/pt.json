@@ -1,0 +1,9 @@
+{
+  "NSPhotoLibraryUsageDescription": "Sua galeria de fotos será mostrada para você escolher sua foto de perfil.",
+  "NSCameraUsageDescription": "Usaremos sua câmera para tirar uma foto que será definida como sua foto de perfil.",
+  "NSPhotoLibraryAddUsageDescription": "Vamos salvar a foto na sua galeria de fotos.",
+  "NSMicrophoneUsageDescription": "Seu microfone será necessário para gravar sua voz nos exercícios.",
+  "LSApplicationQueriesSchemes": [
+    "itms"
+  ]
+}

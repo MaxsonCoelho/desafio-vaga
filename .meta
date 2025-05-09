@@ -1,0 +1,5 @@
+{
+  "projects": {
+    "commons/student-front-commons": "git@github.com:flexge/student-front-commons.git"
+  }
+}

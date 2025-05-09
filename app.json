@@ -1,0 +1,166 @@
+{
+  "expo": {
+    "newArchEnabled": true,
+    "version": "4.0.1",
+    "name": "Flexge Beta",
+    "slug": "FlexgeBeta",
+    "primaryColor": "#285D8D",
+    "orientation": "portrait",
+    "androidStatusBar": {
+      "barStyle": "light-content",
+      "translucent": true,
+      "backgroundColor": "#00000000"
+    },
+    "android": {
+      "versionCode": 2012040551,
+      "package": "com.beta.flexge.studentmobile",
+      "icon": "./app-assets/android-icon.png",
+      "googleServicesFile": "./google-services.json",
+      "softwareKeyboardLayoutMode": "pan",
+      "adaptiveIcon": {
+        "foregroundImage": "./app-assets/android-foreground.png",
+        "backgroundImage": "./app-assets/android-background.png"
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
+    },
+    "ios": {
+      "icon": {
+        "dark": "./app-assets/ios-dark.png",
+        "light": "./app-assets/ios-light.png",
+        "tinted": "./app-assets/ios-tinted.png"
+      },
+      "bundleIdentifier": "com.beta.flexge.studentmobile",
+      "supportsTablet": true,
+      "infoPlist": {
+        "CFBundleAllowMixedLocalizations": true,
+        "NSPhotoLibraryAddUsageDescription": "We will save the photo to your photo gallery.",
+        "LSApplicationQueriesSchemes": [
+          "itms",
+          "itms"
+        ],
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "buildNumber": "2012040551"
+    },
+    "locales": {
+      "pt": "./app-assets/languages/pt.json",
+      "en": "./app-assets/languages/en.json",
+      "es": "./app-assets/languages/es.json"
+    },
+    "extra": {
+      "apiUrl": "https://staging-student-api.flexge.com",
+      "webSocketUrl": "wss://staging-jobs.flexge.com/notifications",
+      "assetsUrl": "https://staging-flexge-files.s3.amazonaws.com",
+      "primaryColor": "#455A64",
+      "secondaryColor": "#607D8B",
+      "lightColor": "#cfd8dc",
+      "appEnvironment": "staging",
+      "domain": "flexge.com",
+      "title": "Flexge",
+      "ssoOnly": false,
+      "domainAlias": [
+        "student"
+      ],
+      "disableStudentSupport": false,
+      "disableStudyQuality": false,
+      "disableFlexgeCourse": false,
+      "simpleSpeechRecognition": false,
+      "eas": {
+        "projectId": "a221675e-0fdd-4e77-a26f-2d479dfaa7ed"
+      }
+    },
+    "platforms": [
+      "android",
+      "ios"
+    ],
+    "packagerOpts": {
+      "config": "metro.config.js",
+      "sourceExts": [
+        "js",
+        "jsx",
+        "svg",
+        "ts",
+        "tsx"
+      ]
+    },
+    "scheme": "flexgestg",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "jsEngine": "hermes",
+    "plugins": [
+      [
+        "expo-video",
+        {
+          "supportsBackgroundPlayback": false,
+          "supportsPictureInPicture": false
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./app-assets/android-notification-icon.png",
+          "color": "#455A64"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Your photo gallery will be shown for you to choose your profile picture.",
+          "cameraPermission": "We will use your camera to take a photo to be set as your profile picture.",
+          "microphonePermission": "Your microphone will be needed to record your voice on exercises."
+        }
+      ],
+      "expo-build-properties",
+      "expo-localization",
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "node_modules/@expo-google-fonts/inter/Inter_100Thin.ttf",
+            "node_modules/@expo-google-fonts/inter/Inter_200ExtraLight.ttf",
+            "node_modules/@expo-google-fonts/inter/Inter_300Light.ttf",
+            "node_modules/@expo-google-fonts/inter/Inter_400Regular.ttf",
+            "node_modules/@expo-google-fonts/inter-tight/InterTight_400Regular_Italic.ttf",
+            "node_modules/@expo-google-fonts/inter/Inter_500Medium.ttf",
+            "node_modules/@expo-google-fonts/inter/Inter_600SemiBold.ttf",
+            "node_modules/@expo-google-fonts/inter-tight/InterTight_600SemiBold_Italic.ttf",
+            "node_modules/@expo-google-fonts/inter/Inter_700Bold.ttf",
+            "node_modules/@expo-google-fonts/inter-tight/InterTight_700Bold_Italic.ttf",
+            "node_modules/@expo-google-fonts/inter/Inter_800ExtraBold.ttf",
+            "node_modules/@expo-google-fonts/inter/Inter_900Black.ttf",
+            "node_modules/@expo-google-fonts/inter-tight/InterTight_900Black.ttf",
+            "node_modules/@expo-google-fonts/inter-tight/InterTight_900Black_Italic.ttf"
+          ]
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#285D8D",
+          "image": "./app-assets/splash-icon.png",
+          "dark": {
+            "image": "./app-assets/splash-icon-dark.png",
+            "backgroundColor": "#000000"
+          },
+          "imageWidth": 200
+        }
+      ],
+      [
+        "expo-asset",
+        {
+          "assets": [
+            "./src/assets",
+            "./commons/student-front-commons/src/assets"
+          ]
+        }
+      ]
+    ],
+    "owner": "freitasjuciel",
+    "updates": {
+      "url": "https://u.expo.dev/a221675e-0fdd-4e77-a26f-2d479dfaa7ed"
+    }
+  }
+}

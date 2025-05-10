@@ -32,30 +32,33 @@ export function GapFillSelectHeader() {
   const userAnswer = useAppSelector((state) => getSelectedItemProp(state, "answer")) as string;
   const itemAnswers = useAppSelector((state) => getSelectedItemProp(state, "item.answers")) as ItemAnswer[];
   const itemLinkedAnswers = useAppSelector((state) =>
-    getSelectedItemProp(state, "item.linkedAnswers"),
+    getSelectedItemProp(state, "item.linkedAnswers")
   ) as LinkedAnswer[];
+  const selectedId = useAppSelector(state => state.itemExecutions.selectedId);
+  console.log("🧠 selectedId in component:", selectedId);
+
+  // DEBUG HEAD
+  console.log("📌 [GapFillSelectHeader] itemText:", itemText);
+  console.log("📌 [GapFillSelectHeader] itemAnswers:", itemAnswers);
+  console.log("📌 [GapFillSelectHeader] itemLinkedAnswers:", itemLinkedAnswers);
+  console.log("📌 [GapFillSelectHeader] userAnswer:", userAnswer);
+  console.log("📌 [GapFillSelectHeader] status:", executionStatus);
 
   const showQuestionHeader = useShowMotion(
     MotionTarget.ItemHeaderQuestion,
     MotionType.FadeInDown,
-    MotionType.FadeOutDown,
+    MotionType.FadeOutDown
   );
   const showQuestionAnswer = useShowMotion(
     MotionTarget.ItemHeaderAnswer,
     MotionType.FadeInDown,
-    MotionType.FadeOutDown,
+    MotionType.FadeOutDown
   );
 
   const getVariantByStatus = useCallback((status: ItemExecutionItemStatus): ExerciseOptionVariant => {
-    if (status === ItemExecutionItemStatus.VALIDATE_CORRECT) {
-      return "success";
-    }
-    if (status === ItemExecutionItemStatus.VALIDATE_WRONG) {
-      return "danger";
-    }
-    if (status === ItemExecutionItemStatus.VALIDATE_WARNING) {
-      return "warning";
-    }
+    if (status === ItemExecutionItemStatus.VALIDATE_CORRECT) return "success";
+    if (status === ItemExecutionItemStatus.VALIDATE_WRONG) return "danger";
+    if (status === ItemExecutionItemStatus.VALIDATE_WARNING) return "warning";
     return "accent";
   }, []);
 
@@ -71,14 +74,14 @@ export function GapFillSelectHeader() {
   return (
     <QuestionAndAnswerContainer
       question={
-        showQuestionHeader ? (
+        showQuestionHeader && itemText ? (
           <Animated.View
             entering={FadeInDown.duration(ItemHeaderQuestionFadeInDown.duration)}
             exiting={FadeOutDown.duration(ItemHeaderQuestionFadeOutDown.duration)}
             style={baseStylesExecution}
           >
             {itemText.split(" ").map((slice, index) => {
-              const foundAnswer = itemLinkedAnswers.find((answer) => answer.index === index);
+              const foundAnswer = itemLinkedAnswers?.find((answer) => answer.index === index);
 
               if (foundAnswer && userAnswer) {
                 return (
@@ -103,7 +106,7 @@ export function GapFillSelectHeader() {
                     alignSelf="flex-end"
                     backgroundColor={
                       [ItemExecutionItemStatus.INITIAL, ItemExecutionItemStatus.READY_FOR_VALIDATION].includes(
-                        executionStatus,
+                        executionStatus
                       )
                         ? COLORS.accent["600"]
                         : COLORS.secondary["400"]
@@ -129,7 +132,7 @@ export function GapFillSelectHeader() {
         ) : null
       }
       answer={
-        showQuestionAnswer ? (
+        showQuestionAnswer && itemText ? (
           <Animated.View
             entering={FadeInDown.duration(ItemHeaderAnswerFadeInDown.duration)}
             exiting={FadeOutDown.duration(ItemHeaderAnswerFadeOutDown.duration)}
@@ -166,38 +169,32 @@ function GapFillSelectWrongFeedback() {
 
   return (
     <WrongFeedbackContainer
-      userAttempts={userAttempts.map((attempt, attemptIndex) => {
-        return (
-          <View flexDirection="row" flexWrap="wrap" gap={SPACINGS["2xs"]} key={`${attempt.answer}-${attemptIndex}`}>
-            {itemText.split(" ").map((slice, index) => {
-              return (
-                <Typography.Text
-                  key={`${attempt.answer}-${slice}`}
-                  label={index === answerIndex ? attempt.answer : slice}
-                  size="lg"
-                  variant={index === answerIndex ? "danger" : "secondary"}
-                  level={600}
-                  weight="semibold"
-                  underlined={index === answerIndex}
-                />
-              );
-            })}
-          </View>
-        );
-      })}
-      correctOption={itemText.split(" ").map((slice, index) => {
-        return (
-          <Typography.Text
-            key={`${slice}-${index}`}
-            label={slice}
-            size="lg"
-            variant={index === answerIndex ? "accent" : "secondary"}
-            level={600}
-            weight="semibold"
-            underlined={index === answerIndex}
-          />
-        );
-      })}
+      userAttempts={userAttempts.map((attempt, attemptIndex) => (
+        <View flexDirection="row" flexWrap="wrap" gap={SPACINGS["2xs"]} key={`${attempt.answer}-${attemptIndex}`}>
+          {itemText.split(" ").map((slice, index) => (
+            <Typography.Text
+              key={`${attempt.answer}-${slice}`}
+              label={index === answerIndex ? attempt.answer : slice}
+              size="lg"
+              variant={index === answerIndex ? "danger" : "secondary"}
+              level={600}
+              weight="semibold"
+              underlined={index === answerIndex}
+            />
+          ))}
+        </View>
+      ))}
+      correctOption={itemText.split(" ").map((slice, index) => (
+        <Typography.Text
+          key={`${slice}-${index}`}
+          label={slice}
+          size="lg"
+          variant={index === answerIndex ? "accent" : "secondary"}
+          level={600}
+          weight="semibold"
+          underlined={index === answerIndex}
+        />
+      ))}
     />
   );
 }
@@ -206,9 +203,13 @@ function GapFillSelectExercise() {
   const { setItemAnswer, isValidating, isPlayingItemAudio } = useExecution();
   const itemText = useAppSelector((state) => getSelectedItemProp(state, "item.text")) as string;
   const executionStatus = useAppSelector((state) => getSelectedItemProp(state, "status")) as string;
-
   const linkedAnswers = useAppSelector((state) => getSelectedItemProp(state, "item.linkedAnswers")) as LinkedAnswer[];
   const userAnswer = useAppSelector((state) => getSelectedItemProp(state, "answer")) as string;
+
+  // DEBUG OPTIONS
+  console.log("📌 [GapFillSelectExercise] itemText:", itemText);
+  console.log("📌 [GapFillSelectExercise] linkedAnswers:", linkedAnswers);
+  console.log("📌 [GapFillSelectExercise] executionStatus:", executionStatus);
 
   const disabled = useMemo(() => {
     return (
@@ -235,25 +236,16 @@ function GapFillSelectExercise() {
   const getOptionVariantByStatusAndAnswer = useCallback(
     (answer?: string): ExerciseOptionVariant | undefined => {
       if (answer === userAnswer) {
-        if (executionStatus === ItemExecutionItemStatus.VALIDATE_CORRECT) {
-          return "success";
-        }
-        if (executionStatus === ItemExecutionItemStatus.VALIDATE_WRONG) {
-          return "danger";
-        }
-        if (executionStatus === ItemExecutionItemStatus.VALIDATE_WARNING) {
-          return "warning";
-        }
-
-        return "accent";
+        return variant;
       }
-
       return undefined;
     },
-    [userAnswer, executionStatus],
+    [userAnswer, variant]
   );
 
-  if (!itemText) return;
+  if (!itemText || !linkedAnswers?.length) {
+    return <Typography.Text label="⚠️ Dados insuficientes para renderizar o exercício." />;
+  }
 
   return (
     <View gap={SPACINGS.xs} margin={SPACINGS.md}>
@@ -289,6 +281,7 @@ function GapFillSelectExercise() {
 
 function GapFillSelect() {
   const executionStatus = useAppSelector((state) => getSelectedItemProp(state, "status"));
+
   if (executionStatus === ItemExecutionItemStatus.CORRECT) return null;
   if (executionStatus === ItemExecutionItemStatus.WRONG) {
     return <GapFillSelectWrongFeedback />;

@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import View from "@core/View";
 import GapFillSelect, { GapFillSelectHeader } from "@core/others/item-types/gap-fill-select";
+import SingleChoiceText from "@core/others/item-types/single-choice-text";
+import SingleChoiceTextHeader from "@core/others/item-types/single-choice-text-header";
 import ExecutionProgress from "@core/others/item-types/ExecutionProgress";
 import { ScrollView as RNScrollView, StatusBar } from "react-native";
 import UnitExecutionHeader from "@features/UnitExecution/components/UnitExecutionHeader";
@@ -22,36 +24,58 @@ import { NativeSyntheticEvent } from "react-native/Libraries/Types/CoreEventType
 import { NativeScrollEvent } from "react-native/Libraries/Components/ScrollView/ScrollView";
 import { ItemExecutionItemStatus } from "@commons/slices/types/itemExecutionTypes";
 import ScrollView from "@core/others/ScrollView";
+import Typography from "@core/general/Typography";
 
 function ItemHeaderExecution() {
   const itemTypeKey = useAppSelector(getItemExecutionType);
 
-  const { instructionLabel, ItemTypeQuestion } = useMemo<{
-    instructionLabel: string;
-    ItemTypeQuestion: React.ReactElement;
-  }>(() => {
-    return (
-      {
-        [ItemTypeKey.GAP_FILL_SELECT]: {
-          instructionLabel: getTranslation(
-            "features.UnitExecution.screens.UnitExecution.ItemHeaderExecution.gapFillSelectInstructionLabel",
-          ),
+  const { instructionLabel, ItemTypeQuestion } = useMemo(() => {
+    switch (itemTypeKey) {
+      case ItemTypeKey.GAP_FILL_SELECT:
+        return {
+          instructionLabel: getTranslation("features.UnitExecution.screens.UnitExecution.ItemHeaderExecution.gapFillSelectInstructionLabel"),
           ItemTypeQuestion: <GapFillSelectHeader />,
-        },
-      }[itemTypeKey as ItemTypeKey.GAP_FILL_SELECT] || {
-        instructionLabel: "",
-        ItemTypeQuestion: null,
-      }
-    );
-  }, [itemTypeKey]);
+        };
+  
+      case ItemTypeKey.SINGLE_CHOICE_TEXT:
+        return {
+          instructionLabel: getTranslation("features.UnitExecution.screens.UnitExecution.ItemHeaderExecution.singleChoiceTextInstructionLabel"),
+          ItemTypeQuestion: <SingleChoiceTextHeader />,
+        };
+  
+      default:
+        return {
+          instructionLabel: "⚠️ Tipo de item não suportado.",
+          ItemTypeQuestion: undefined,
+        };
+    }
+  }, [itemTypeKey]);  
 
   return <UnitExecutionHeader instructionLabel={instructionLabel} itemTypeQuestion={ItemTypeQuestion} />;
 }
 
 function ItemExecution() {
   const itemTypeKey = useAppSelector(getItemExecutionType);
+  console.log("🧩 ItemExecution tipo:", itemTypeKey);
 
-  return <View flex={1}>{itemTypeKey === ItemTypeKey.GAP_FILL_SELECT && <GapFillSelect />}</View>;
+  switch (itemTypeKey) {
+    case ItemTypeKey.GAP_FILL_SELECT:
+      return <GapFillSelect />;
+    case ItemTypeKey.SINGLE_CHOICE_TEXT:
+      return <SingleChoiceText />;
+    default:
+      return (
+        <View padding={20}>
+          <View backgroundColor={COLORS.accent[100]} padding={20} borderRadius={12}>
+            <Typography.Text
+              label={`⚠️ Este item do tipo "${itemTypeKey}" ainda não tem um componente associado.`}
+              size="md"
+              variant="secondary"
+            />
+          </View>
+        </View>
+      );
+  }
 }
 
 export default function UnitExecution() {

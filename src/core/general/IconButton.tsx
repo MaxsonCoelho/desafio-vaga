@@ -14,6 +14,7 @@ export type IconSpeed = "0.5x" | "1x" | "1.5x" | "2x";
 export type IconButtonProps = Omit<ButtonProps, "label" | "iconPosition" | "size" | "icon"> & {
   icon: IconNames | IconSpeed;
   size?: "xs" | "sm" | "md" | "lg";
+  onLongPress?: () => void; // ✅ adiciona aqui
 };
 
 function IconButton({
@@ -24,13 +25,16 @@ function IconButton({
   disabled = false,
   icon,
   onPress,
+  onLongPress, // ✅ agora reconhecido corretamente
   loading,
 }: IconButtonProps) {
   const buttonSize = THEME.button.spacing[size];
   const iconSize = ["lg", "xs"].includes(size) ? size : "md";
 
   const changeableStyles = useMemo(() => {
-    const buttonStateTheme = THEME.button.theme[theme][type][variant] as ButtonTheme;
+    const themeGroup = THEME.button.theme[theme];
+    const typeGroup = themeGroup?.[type as keyof typeof themeGroup];
+    const buttonStateTheme = typeGroup?.[variant] as ButtonTheme;
     if (disabled || loading) {
       return buttonStateTheme.disabled;
     }
@@ -40,19 +44,20 @@ function IconButton({
 
   return (
     <TouchableOpacity
-      disabled={disabled || loading}
-      onPress={onPress}
-      style={{
-        opacity: changeableStyles.opacity,
-        backgroundColor: changeableStyles.backgroundColor,
-        borderStyle: "solid",
-        borderWidth: normalizeHorizontalSize(1),
-        borderColor: changeableStyles.borderColor,
-        paddingHorizontal: normalizeVerticalSize(buttonSize.circular),
-        paddingVertical: normalizeVerticalSize(buttonSize.circular),
-        borderRadius: normalizeHorizontalSize(buttonSize.circular * 2),
-      }}
-    >
+  disabled={disabled || loading}
+  onPress={onPress}
+  onLongPress={onLongPress} // ✅ aqui
+  style={{
+    opacity: changeableStyles.opacity,
+    backgroundColor: changeableStyles.backgroundColor,
+    borderStyle: "solid",
+    borderWidth: normalizeHorizontalSize(1),
+    borderColor: changeableStyles.borderColor,
+    paddingHorizontal: normalizeVerticalSize(buttonSize.circular),
+    paddingVertical: normalizeVerticalSize(buttonSize.circular),
+    borderRadius: normalizeHorizontalSize(buttonSize.circular * 2),
+  }}
+>
       {loading && <Loader size="lg" />}
       {!loading &&
         (["0.5x", "1x", "1.5x", "2x"].includes(icon) ? (

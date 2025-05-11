@@ -15,6 +15,7 @@ import useService from "@commons/hooks/useService";
 import LocalizationService from "@commons/services/localizationService";
 import locales, { updateLanguageContent } from "@locales";
 import dayjs from "dayjs";
+import UnitExecutionProvider from "@commons/contexts/UnitExecutionProvider";
 
 export type RootStackParamList = {
   authStack: NavigatorScreenParams<AuthStackParamList>;
@@ -55,11 +56,13 @@ export default function Navigator() {
     <StudentContextProvider onLoaded={handleLoaded}>
       <NavigationContainer ref={navigationRef}>
         <OrientationContextProvider>
-          <Stack.Navigator screenOptions={{ gestureEnabled: false, headerShown: false }}>
-            <Stack.Screen name="authStack" component={AuthNavigation} />
-            <Stack.Screen name="appStack" component={AppNavigation} />
-            <Stack.Screen name="unitStack" component={UnitNavigation} />
-          </Stack.Navigator>
+          <UnitExecutionProvider>
+              <Stack.Navigator screenOptions={{ gestureEnabled: false, headerShown: false }}>
+              <Stack.Screen name="authStack" component={AuthNavigation} />
+              <Stack.Screen name="appStack" component={AppNavigation} />
+              <Stack.Screen name="unitStack" component={UnitNavigation} />
+              </Stack.Navigator>
+          </UnitExecutionProvider>
         </OrientationContextProvider>
       </NavigationContainer>
     </StudentContextProvider>

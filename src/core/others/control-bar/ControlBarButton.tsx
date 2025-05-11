@@ -11,6 +11,7 @@ function ControlBarButton({
   variant = "accent",
   disabled,
   onPress,
+  onLongPress, // 👈 adicionado aqui
   labelKey,
   loading,
 }: {
@@ -20,14 +21,21 @@ function ControlBarButton({
   theme?: "light" | "dark";
   disabled?: boolean;
   onPress: () => void;
+  onLongPress?: () => void; // 👈 definido como opcional
   labelKey?: string;
   loading?: boolean;
 }) {
   const { setControlBarActionWithTooltip } = useExecution();
+
   const handlePress = useCallback(() => {
     setControlBarActionWithTooltip?.(null);
     onPress();
   }, [onPress]);
+
+  const handleLongPress = useCallback(() => {
+    onLongPress?.();
+  }, [onLongPress]);
+
   return (
     <View flexDirection="column" gap={SPACINGS.xs} alignItems="center">
       <IconButton
@@ -37,6 +45,7 @@ function ControlBarButton({
         type={type}
         size="lg"
         onPress={disabled ? undefined : handlePress}
+        onLongPress={disabled ? undefined : handleLongPress} // 👈 suportando onLongPress
         loading={loading}
         disabled={disabled}
       />

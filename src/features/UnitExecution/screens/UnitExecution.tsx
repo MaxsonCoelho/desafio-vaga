@@ -25,6 +25,7 @@ import { NativeScrollEvent } from "react-native/Libraries/Components/ScrollView/
 import { ItemExecutionItemStatus } from "@commons/slices/types/itemExecutionTypes";
 import ScrollView from "@core/others/ScrollView";
 import Typography from "@core/general/Typography";
+import ExecutionProvider from "src/contexts/ExecutionProvider";
 
 function ItemHeaderExecution() {
   const itemTypeKey = useAppSelector(getItemExecutionType);
@@ -106,7 +107,6 @@ export default function UnitExecution() {
   return (
     <View flex={1} backgroundColor={COLORS.secondary[200]}>
       <StatusBar barStyle="dark-content" />
-      <UnitExecutionProvider>
         <ExecutionProgress transparent={transparentExecutionProgress} />
         <ScrollView
           ref={scrollViewRef}
@@ -117,8 +117,11 @@ export default function UnitExecution() {
           <ItemHeaderExecution />
           <ItemExecution />
         </ScrollView>
-        <ControlBar />
-      </UnitExecutionProvider>
+        <UnitExecutionProvider>
+          <ExecutionProvider>
+            <ControlBar />
+          </ExecutionProvider>
+        </UnitExecutionProvider>
     </View>
   );
 }
